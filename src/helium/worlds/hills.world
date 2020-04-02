@@ -1,0 +1,76 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+    <world name="default">
+        <scene>
+            <shadows>false</shadows>
+        </scene>
+        <gui>
+            <camera name="user_camera">
+                <pose>-5 0 20 0 0.2 0</pose>
+            </camera>
+        </gui>
+        <physics type="ode">
+            <ode>
+                <solver>
+                    <type>quick</type>
+                    <iters>100</iters>
+                    <sor>1.0</sor>
+                </solver>
+                <constraints>
+                    <cfm>0.0</cfm>
+                    <erp>0.2</erp>
+                    <contact_max_correcting_vel>0.1</contact_max_correcting_vel>
+                    <contact_surface_layer>0.0</contact_surface_layer>
+                </constraints>
+            </ode>
+            <!-- <real_time_factor>0.5</real_time_factor> -->
+            <real_time_update_rate>-1</real_time_update_rate>
+            <!--<max_step_size>0.0020</max_step_size>-->
+        </physics>
+        <gravity>0 0 -9.8</gravity>
+        <include>
+            <uri>model://sun</uri>
+        </include>
+        <model name="iris_demo">
+            <include>
+                <uri>model://iris_with_ardupilot</uri>
+            </include>
+            <pose>-20 0 0 0 0 0</pose>
+        </model>
+        <model name="heightmap">
+            <include>
+                <uri>model://winding_valley_heightmap</uri>
+            </include>
+        </model>
+        <!-- <population name="oak_population">
+            <model name="oak_tree">
+                <include>
+                    <uri>model://oak_tree</uri>
+                </include>
+            </model>
+            <pose>0 0 20 0 0 0</pose>
+            <box>
+                <size>900 900 0.1</size>
+            </box>
+            <model_count>100</model_count> 
+            <distribution>
+                <type>random</type>
+            </distribution>
+        </population> -->
+        <!-- <population name="pine_population">
+            <model name="pine_tree">
+                <include>
+                    <uri>model://pine_tree</uri>
+                </include>
+            </model>
+            <pose>0 0 0 0 0 0</pose>
+            <box>
+                <size>100 100 0.1</size>
+            </box>
+            <model_count>1</model_count>
+            <distribution>
+                <type>uniform</type>
+            </distribution>
+        </population> -->
+    </world>
+</sdf>

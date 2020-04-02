@@ -1,0 +1,5 @@
+quartz
+/home/yanhwee/quartz/devel/.private/quartz/cmake.lock /home/yanhwee/quartz/devel/./cmake.lock
+/home/yanhwee/quartz/devel/.private/quartz/lib/pkgconfig/quartz.pc /home/yanhwee/quartz/devel/lib/pkgconfig/quartz.pc
+/home/yanhwee/quartz/devel/.private/quartz/share/quartz/cmake/quartzConfig-version.cmake /home/yanhwee/quartz/devel/share/quartz/cmake/quartzConfig-version.cmake
+/home/yanhwee/quartz/devel/.private/quartz/share/quartz/cmake/quartzConfig.cmake /home/yanhwee/quartz/devel/share/quartz/cmake/quartzConfig.cmake

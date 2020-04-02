@@ -1,0 +1,6 @@
+devel_space: /home/yanhwee/quartz/devel
+install: false
+install_space: /home/yanhwee/quartz/install
+profile: default
+source_space: /home/yanhwee/quartz/src
+workspace: /home/yanhwee/quartz
