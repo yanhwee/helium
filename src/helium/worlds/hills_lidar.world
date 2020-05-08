@@ -33,7 +33,7 @@
         </include>
         <model name="iris_demo">
             <include>
-                <uri>model://iris_with_ardupilot</uri>
+                <uri>model://iris_with_lidar</uri>
             </include>
             <pose>-20 0 0 0 0 0</pose>
         </model>
