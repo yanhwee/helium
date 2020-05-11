@@ -31,7 +31,7 @@
         <include>
             <uri>model://sun</uri>
         </include>
-        <model name="iris_demo">
+        <model name="iris_lidar">
             <include>
                 <uri>model://iris_with_lidar</uri>
             </include>
