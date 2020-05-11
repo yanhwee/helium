@@ -1,5 +1,0 @@
-helium
-/home/yanhwee/quartz/devel/.private/helium/cmake.lock /home/yanhwee/quartz/devel/./cmake.lock
-/home/yanhwee/quartz/devel/.private/helium/lib/pkgconfig/helium.pc /home/yanhwee/quartz/devel/lib/pkgconfig/helium.pc
-/home/yanhwee/quartz/devel/.private/helium/share/helium/cmake/heliumConfig-version.cmake /home/yanhwee/quartz/devel/share/helium/cmake/heliumConfig-version.cmake
-/home/yanhwee/quartz/devel/.private/helium/share/helium/cmake/heliumConfig.cmake /home/yanhwee/quartz/devel/share/helium/cmake/heliumConfig.cmake

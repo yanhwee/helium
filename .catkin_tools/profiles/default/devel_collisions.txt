@@ -1,1 +1,0 @@
-/home/yanhwee/quartz/devel/./cmake.lock 2

@@ -1,8 +1,0 @@
-prefix=/home/yanhwee/quartz/devel/.private/helium
-
-Name: helium
-Description: Description of helium
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 
