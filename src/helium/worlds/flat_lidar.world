@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <world name="default">
+    <scene>
+      <shadows>false</shadows>
+    </scene>
+
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>    
+
+    <!-- A ground plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <include>
+      <uri>model://ground_plane</uri>
+      <pose>0 0 -0.01 0 0 0</pose>
+    </include>
+
+    <!-- Iris with Lidar -->
+    <include>
+      <uri>model://iris_with_lidar</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+
+    <!-- Obstacles -->
+    <!-- <include>
+      <uri>model://basic_cylinder</uri>
+      <pose>15 -30 0 0 0 0</pose>
+    </include> -->
+    <include>
+      <uri>model://basic_cylinder</uri>
+      <pose>30 0 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://basic_cylinder</uri>
+      <pose>0 30 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://basic_cylinder</uri>
+      <pose>-30 0 0 0 0 0</pose>
+    </include>
+    <!-- <include>
+      <uri>model://basic_cylinder</uri>
+      <pose>-15 -30 0 0 0 0</pose>
+    </include> -->
+  </world>
+</sdf>

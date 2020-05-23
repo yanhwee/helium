@@ -28,20 +28,18 @@
             <!--<max_step_size>0.0020</max_step_size>-->
         </physics>
         <gravity>0 0 -9.8</gravity>
+
         <include>
             <uri>model://sun</uri>
         </include>
-        <model name="iris_lidar">
-            <include>
-                <uri>model://iris_with_lidar</uri>
-            </include>
+        <include>
+            <uri>model://iris_with_lidar</uri>
             <pose>-20 0 0 0 0 0</pose>
-        </model>
-        <model name="heightmap">
-            <include>
-                <uri>model://winding_valley_heightmap</uri>
-            </include>
-        </model>
+        </include>
+        <include>
+            <uri>model://winding_valley_heightmap</uri>
+        </include>
+
         <!-- <population name="oak_population">
             <model name="oak_tree">
                 <include>

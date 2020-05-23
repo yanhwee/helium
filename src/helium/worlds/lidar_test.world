@@ -6,9 +6,16 @@
     </scene>
 
     <!-- My Lidar -->
-    <include>
+    <!-- <include>
       <uri>model://lidar</uri>
       <pose>2 0 0 0 1.5708 0</pose>
+    </include> -->
+
+
+    <!-- My 360 Lidar -->
+    <include>
+      <uri>model://lidar_360</uri>
+      <pose>2 0 0 0 0 0</pose>
     </include>
 
     <!-- A global light source -->

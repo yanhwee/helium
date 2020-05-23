@@ -1,0 +1,36 @@
+<?xml version='1.0'?>
+<sdf version="1.6">
+  <model name="basic_cylinder">
+    <static>true</static>
+    <link name="link">
+      <pose>0 0 10 0 0 0</pose>
+      <collision name="collision">
+        <geometry>
+          <cylinder>
+            <radius>2</radius>
+            <length>20</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name='visual'>
+        <geometry>
+          <cylinder>
+            <radius>2</radius>
+            <length>20</length>
+          </cylinder>
+        </geometry>
+      </visual>
+      <!-- <inertial>
+        <mass>100</mass>
+        <inertia>
+          <ixx>0.145833</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.145833</iyy>
+          <iyz>0</iyz>
+          <izz>0.125</izz>
+        </inertia>
+      </inertial> -->
+    </link>
+  </model>
+</sdf>
