@@ -34,19 +34,23 @@
 
       <sensor type="ray" name="sensor">
         <pose>0 0 0.01 0 0 0</pose>
-        <visualize>true</visualize>
-        <update_rate>30</update_rate>
+        <visualize>false</visualize>
+        <update_rate>1</update_rate>
         <ray>
 
           <scan>
             <horizontal>
-              <samples>72</samples>
+              <samples>8</samples>
               <resolution>1</resolution>
               <min_angle>0</min_angle>
-              <max_angle>-6.19591884458</max_angle>
-              <!-- <max_angle>-5.93411945678</max_angle> 18 -->
-              <!-- <max_angle>-6.10865238198</max_angle> 36 -->
-              <!-- <max_angle>-5.49778714378</max_angle> 8 -->
+              <!-- 72 -->
+              <!-- <max_angle>-6.19591884458</max_angle> -->
+              <!-- 18 -->
+              <!-- <max_angle>-5.93411945678</max_angle> -->
+              <!-- 36 -->
+              <!-- <max_angle>-6.10865238198</max_angle> -->
+              <!-- 8 -->
+              <max_angle>-5.49778714378</max_angle>
             </horizontal>
           </scan>
 

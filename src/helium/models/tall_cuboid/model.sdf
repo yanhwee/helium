@@ -1,0 +1,34 @@
+<?xml version='1.0'?>
+<sdf version="1.6">
+  <model name="tall_cuboid">
+    <static>true</static>
+    <link name="link">
+      <pose>0 0 25 0 0 0</pose>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>10 10 100</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='visual'>
+        <geometry>
+          <box>
+            <size>10 10 100</size>
+          </box>
+        </geometry>
+      </visual>
+      <!-- <inertial>
+        <mass>100</mass>
+        <inertia>
+          <ixx>0.145833</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.145833</iyy>
+          <iyz>0</iyz>
+          <izz>0.125</izz>
+        </inertia>
+      </inertial> -->
+    </link>
+  </model>
+</sdf>

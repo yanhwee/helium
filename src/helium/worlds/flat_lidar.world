@@ -28,10 +28,10 @@
 
 
     <!-- Obstacles -->
-    <!-- <include>
+    <include>
       <uri>model://basic_cylinder</uri>
       <pose>15 -30 0 0 0 0</pose>
-    </include> -->
+    </include>
     <include>
       <uri>model://basic_cylinder</uri>
       <pose>30 0 0 0 0 0</pose>
@@ -44,9 +44,9 @@
       <uri>model://basic_cylinder</uri>
       <pose>-30 0 0 0 0 0</pose>
     </include>
-    <!-- <include>
+    <include>
       <uri>model://basic_cylinder</uri>
       <pose>-15 -30 0 0 0 0</pose>
-    </include> -->
+    </include>
   </world>
 </sdf>
