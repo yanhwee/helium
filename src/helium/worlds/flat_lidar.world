@@ -48,5 +48,30 @@
       <uri>model://basic_cylinder</uri>
       <pose>-15 -30 0 0 0 0</pose>
     </include>
+    <!-- <include>
+      <name>a1</name>
+      <uri>model://tall_cuboid</uri>
+      <pose>15 -30 0 0 0 0</pose>
+    </include>
+    <include>
+      <name>a2</name>
+      <uri>model://tall_cuboid</uri>
+      <pose>30 0 0 0 0 0</pose>
+    </include>
+    <include>
+      <name>a3</name>
+      <uri>model://tall_cuboid</uri>
+      <pose>0 30 0 0 0 0</pose>
+    </include>
+    <include>
+      <name>a4</name>
+      <uri>model://tall_cuboid</uri>
+      <pose>-30 0 0 0 0 0</pose>
+    </include>
+    <include>
+      <name>a5</name>
+      <uri>model://tall_cuboid</uri>
+      <pose>-15 -30 0 0 0 0</pose>
+    </include> -->
   </world>
 </sdf>
