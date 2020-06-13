@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+    <world name="default">
+        <scene>
+            <shadows>false</shadows>
+        </scene>
+        <gui>
+            <camera name="user_camera">
+                <pose>-35 0 1 0 0 0</pose>
+            </camera>
+        </gui>
+
+        <!-- Light Source -->
+        <include>
+            <uri>model://sun</uri>
+        </include>
+
+        <!-- Terrain -->
+        <include>
+            <uri>model://winding_valley_heightmap</uri>
+        </include>
+
+        <!-- Iris with Lidar -->
+        <include>
+            <uri>model://iris_with_lidar</uri>
+            <pose>-20 0 0 0 0 0</pose>
+        </include>
+
+        <!-- Obstacles -->
+        <include>
+            <name>unit_cuboid_1</name>
+            <uri>model://tall_cuboid</uri>
+            <pose>40 -120 0 0 0 0</pose>
+        </include>
+        <include>
+            <name>unit_cuboid_2</name>
+            <uri>model://tall_cuboid</uri>
+            <pose>100 0 0 0 0 0</pose>
+        </include>
+        <include>
+            <name>unit_cuboid_3</name>
+            <uri>model://tall_cuboid</uri>
+            <pose>-20 120 0 0 0 0</pose>
+        </include>
+        <include>
+            <name>unit_cuboid_4</name>
+            <uri>model://tall_cuboid</uri>
+            <pose>-140 0 0 0 0 0</pose>
+        </include>
+        <include>
+            <name>unit_cuboid_5</name>
+            <uri>model://tall_cuboid</uri>
+            <pose>-80 -120 0 0 0 0</pose>
+        </include>
+
+        <!-- Trees -->
+        <!-- <population name="oak_population">
+            <model name="oak_tree">
+                <include>
+                    <uri>model://oak_tree</uri>
+                </include>
+            </model>
+            <pose>0 0 0 0 0 0</pose>
+            <box>
+                <size>450 450 0.1</size>
+            </box>
+            <model_count>100</model_count> 
+            <distribution>
+                <type>random</type>
+            </distribution>
+        </population> -->
+        <!-- <population name="pine_population">
+            <model name="pine_tree">
+                <include>
+                    <uri>model://pine_tree</uri>
+                </include>
+            </model>
+            <pose>0 0 0 0 0 0</pose>
+            <box>
+                <size>450 450 0.1</size>
+            </box>
+            <model_count>100</model_count>
+            <distribution>
+                <type>random</type>
+            </distribution>
+        </population> -->
+        
+    </world>
+</sdf>
