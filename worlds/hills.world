@@ -9,39 +9,40 @@
                 <pose>-35 0 1 0 0 0</pose>
             </camera>
         </gui>
-        <physics type="ode">
-            <ode>
-                <solver>
-                    <type>quick</type>
-                    <iters>100</iters>
-                    <sor>1.0</sor>
-                </solver>
-                <constraints>
-                    <cfm>0.0</cfm>
-                    <erp>0.2</erp>
-                    <contact_max_correcting_vel>0.1</contact_max_correcting_vel>
-                    <contact_surface_layer>0.0</contact_surface_layer>
-                </constraints>
-            </ode>
-            <!-- <real_time_factor>0.5</real_time_factor> -->
-            <real_time_update_rate>-1</real_time_update_rate>
-            <!--<max_step_size>0.0020</max_step_size>-->
-        </physics>
-        <gravity>0 0 -9.8</gravity>
         <include>
             <uri>model://sun</uri>
         </include>
-        <model name="iris_demo">
-            <include>
-                <uri>model://iris_with_ardupilot</uri>
-            </include>
+        <include>
+            <uri>model://winding_valley_heightmap</uri>
+        </include>
+        <include>
+            <uri>model://iris_with_lidar</uri>
             <pose>-20 0 0 0 0 0</pose>
-        </model>
-        <model name="heightmap">
-            <include>
-                <uri>model://winding_valley_heightmap</uri>
-            </include>
-        </model>
+        </include>
+
+        <!-- Obstacles -->
+        <include>
+            <uri>model://tall_cuboid</uri>
+            <pose>40 -120 0 0 0 0</pose>
+        </include>
+        <include>
+            <uri>model://tall_cuboid</uri>
+            <pose>100 0 0 0 0 0</pose>
+        </include>
+        <include>
+            <uri>model://tall_cuboid</uri>
+            <pose>-20 120 0 0 0 0</pose>
+        </include>
+        <include>
+            <uri>model://tall_cuboid</uri>
+            <pose>-140 0 0 0 0 0</pose>
+        </include>
+        <include>
+            <uri>model://tall_cuboid</uri>
+            <pose>-80 -120 0 0 0 0</pose>
+        </include>
+
+        <!-- Trees -->
         <!-- <population name="oak_population">
             <model name="oak_tree">
                 <include>
@@ -72,5 +73,23 @@
                 <type>random</type>
             </distribution>
         </population> -->
+
+        <!-- <physics type="ode">
+            <ode>
+                <solver>
+                    <type>quick</type>
+                    <iters>100</iters>
+                    <sor>1.0</sor>
+                </solver>
+                <constraints>
+                    <cfm>0.0</cfm>
+                    <erp>0.2</erp>
+                    <contact_max_correcting_vel>0.1</contact_max_correcting_vel>
+                    <contact_surface_layer>0.0</contact_surface_layer>
+                </constraints>
+            </ode>
+            <real_time_update_rate>-1</real_time_update_rate>
+        </physics>
+        <gravity>0 0 -9.8</gravity> -->
     </world>
 </sdf>
