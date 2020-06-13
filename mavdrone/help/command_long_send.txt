@@ -1,0 +1,19 @@
+Help on method command_long_send in module pymavlink.dialects.v20.ardupilotmega:
+
+command_long_send(target_system, target_component, command, confirmation, param1, param2, param3, param4, param5, param6, param7, force_mavlink1=False) method of pymavlink.dialects.v20.ardupilotmega.MAVLink instance
+    Send a command with up to seven parameters to the MAV. The command
+    microservice is documented at
+    https://mavlink.io/en/services/command.html
+    
+    target_system             : System which should execute the command (type:uint8_t)
+    target_component          : Component which should execute the command, 0 for all components (type:uint8_t)
+    command                   : Command ID (of command to send). (type:uint16_t, values:MAV_CMD)
+    confirmation              : 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill command) (type:uint8_t)
+    param1                    : Parameter 1 (for the specific command). (type:float)
+    param2                    : Parameter 2 (for the specific command). (type:float)
+    param3                    : Parameter 3 (for the specific command). (type:float)
+    param4                    : Parameter 4 (for the specific command). (type:float)
+    param5                    : Parameter 5 (for the specific command). (type:float)
+    param6                    : Parameter 6 (for the specific command). (type:float)
+    param7                    : Parameter 7 (for the specific command). (type:float)
+

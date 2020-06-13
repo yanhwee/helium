@@ -1,0 +1,209 @@
+Help on mavudp in module pymavlink.mavutil object:
+
+class mavudp(mavfile)
+ |  a UDP mavlink socket
+ |  
+ |  Method resolution order:
+ |      mavudp
+ |      mavfile
+ |      builtins.object
+ |  
+ |  Methods defined here:
+ |  
+ |  __init__(self, device, input=True, broadcast=False, source_system=255, source_component=0, use_native=False)
+ |      Initialize self.  See help(type(self)) for accurate signature.
+ |  
+ |  close(self)
+ |      default close method
+ |  
+ |  recv(self, n=None)
+ |      default recv method
+ |  
+ |  recv_msg(self)
+ |      message receive routine for UDP link
+ |  
+ |  write(self, buf)
+ |      default write method
+ |  
+ |  ----------------------------------------------------------------------
+ |  Methods inherited from mavfile:
+ |  
+ |  arducopter_arm(self)
+ |      arm motors (arducopter only)
+ |  
+ |  arducopter_disarm(self)
+ |      calibrate pressure
+ |  
+ |  auto_mavlink_version(self, buf)
+ |      auto-switch mavlink protocol version
+ |  
+ |  calibrate_level(self)
+ |      calibrate accels (1D version)
+ |  
+ |  calibrate_pressure(self)
+ |      calibrate pressure
+ |  
+ |  check_condition(self, condition)
+ |      check if a condition is true
+ |  
+ |  disable_signing(self)
+ |      disable MAVLink2 signing
+ |  
+ |  field(self, type, field, default=None)
+ |      convenient function for returning an arbitrary MAVLink
+ |      field with a default
+ |  
+ |  location(self, relative_alt=False)
+ |      return current location
+ |  
+ |  mavlink10(self)
+ |      return True if using MAVLink 1.0 or later
+ |  
+ |  mavlink20(self)
+ |      return True if using MAVLink 2.0 or later
+ |  
+ |  mode_mapping(self)
+ |      return dictionary mapping mode names to numbers, or None if unknown
+ |  
+ |  motors_armed(self)
+ |      return true if motors armed
+ |  
+ |  motors_armed_wait(self)
+ |      wait for motors to be armed
+ |  
+ |  motors_disarmed_wait(self)
+ |      wait for motors to be disarmed
+ |  
+ |  packet_loss(self)
+ |      packet loss as a percentage
+ |  
+ |  param(self, name, default=None)
+ |      convenient function for returning an arbitrary MAVLink
+ |      parameter with a default
+ |  
+ |  param_fetch_all(self)
+ |      initiate fetch of all parameters
+ |  
+ |  param_fetch_one(self, name)
+ |      initiate fetch of one parameter
+ |  
+ |  param_set_send(self, parm_name, parm_value, parm_type=None)
+ |      wrapper for parameter set
+ |  
+ |  post_message(self, msg)
+ |      default post message call
+ |  
+ |  pre_message(self)
+ |      default pre message call
+ |  
+ |  probably_vehicle_heartbeat(self, msg)
+ |  
+ |  reboot_autopilot(self, hold_in_bootloader=False)
+ |      reboot the autopilot
+ |  
+ |  recv_match(self, condition=None, type=None, blocking=False, timeout=None)
+ |      recv the next MAVLink message that matches the given condition
+ |      type can be a string or a list of strings
+ |  
+ |  select(self, timeout)
+ |      wait for up to timeout seconds for more data
+ |  
+ |  set_mode(self, mode, custom_mode=0, custom_sub_mode=0)
+ |      set arbitrary flight mode
+ |  
+ |  set_mode_apm(self, mode, custom_mode=0, custom_sub_mode=0)
+ |      enter arbitrary mode
+ |  
+ |  set_mode_auto(self)
+ |      enter auto mode
+ |  
+ |  set_mode_fbwa(self)
+ |      enter FBWA mode
+ |  
+ |  set_mode_flag(self, flag, enable)
+ |      Enables/ disables MAV_MODE_FLAG
+ |      @param flag The mode flag, 
+ |        see MAV_MODE_FLAG enum
+ |      @param enable Enable the flag, (True/False)
+ |  
+ |  set_mode_loiter(self)
+ |      enter LOITER mode
+ |  
+ |  set_mode_manual(self)
+ |      enter MANUAL mode
+ |  
+ |  set_mode_px4(self, mode, custom_mode, custom_sub_mode)
+ |      enter arbitrary mode
+ |  
+ |  set_mode_rtl(self)
+ |      enter RTL mode
+ |  
+ |  set_relay(self, relay_pin=0, state=True)
+ |      Set relay_pin to value of state
+ |  
+ |  set_rtscts(self, enable)
+ |      enable/disable RTS/CTS if applicable
+ |  
+ |  set_servo(self, channel, pwm)
+ |      set a servo value
+ |  
+ |  setup_logfile(self, logfile, mode='w')
+ |      start logging to the given logfile, with timestamps
+ |  
+ |  setup_logfile_raw(self, logfile, mode='w')
+ |      start logging raw bytes to the given logfile, without timestamps
+ |  
+ |  setup_signing(self, secret_key, sign_outgoing=True, allow_unsigned_callback=None, initial_timestamp=None, link_id=None)
+ |      setup for MAVLink2 signing
+ |  
+ |  time_since(self, mtype)
+ |      return the time since the last message of type mtype was received
+ |  
+ |  wait_gps_fix(self)
+ |  
+ |  wait_heartbeat(self, blocking=True, timeout=None)
+ |      wait for a heartbeat so we know the target system IDs
+ |  
+ |  waypoint_clear_all_send(self)
+ |      wrapper for waypoint_clear_all_send
+ |  
+ |  waypoint_count_send(self, seq)
+ |      wrapper for waypoint_count_send
+ |  
+ |  waypoint_current(self)
+ |      return current waypoint
+ |  
+ |  waypoint_request_list_send(self)
+ |      wrapper for waypoint_request_list_send
+ |  
+ |  waypoint_request_send(self, seq)
+ |      wrapper for waypoint_request_send
+ |  
+ |  waypoint_set_current_send(self, seq)
+ |      wrapper for waypoint_set_current_send
+ |  
+ |  ----------------------------------------------------------------------
+ |  Data descriptors inherited from mavfile:
+ |  
+ |  __dict__
+ |      dictionary for instance variables (if defined)
+ |  
+ |  __weakref__
+ |      list of weak references to the object (if defined)
+ |  
+ |  base_mode
+ |  
+ |  flightmode
+ |  
+ |  mav_type
+ |  
+ |  messages
+ |  
+ |  params
+ |  
+ |  target_component
+ |  
+ |  target_system
+ |  
+ |  vehicle_type
+
