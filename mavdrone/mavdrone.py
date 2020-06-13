@@ -2,6 +2,7 @@ from pymavlink import mavutil
 from pymavlink.mavutil import mavlink
 from utils import haversineLatLonDeg
 from functools import wraps
+import time
 
 class Mode:
     STABILIZE = 0;      ACRO = 1;       ALT_HOLD = 2;   AUTO = 3;   GUIDED = 4
@@ -49,10 +50,11 @@ class Command:
             self.params[-3:-1] = haversineLatLonDeg(*latlon, self.params[-3], self.params[-2])
 
 class Mission(Command):
-    def __init__(self, drone, frame):
-        self.drone = drone
+    '''Commom Frame Arguments:
+    mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavlink.MAV_FRAME_GLOBAL_TERRAIN_ALT'''
+    def __init__(self, frame):
         self.frame = frame
-        self.cmds = []
+        self.cmds = [Command.takeoff(0, 0, 1)] # pymavlink bug. First item always corrupted.
         for name in ['waypoint', 'takeoff', 'land']:
             setattr(self, name, self.__decorator(getattr(self, name)))
 
@@ -73,23 +75,6 @@ class Mission(Command):
         for cmd in self.cmds:
             cmd.localize(yx=yx, latlon=latlon)
         return self
-
-    def upload(self):
-        drone.wait_heartbeat()
-        print(f'Sending Mission Items: {len(self.cmds)}')
-        drone.conn.waypoint_count_send(len(self.cmds))
-        while True:
-            msg = drone.get_msg('MISSION_REQUEST', 'MISSION_ACK')
-            if msg.get_type() == 'MISSION_REQUEST':
-                print(msg.seq, end=' ')
-                cmd = self.cmds[msg.seq]
-                params = cmd.params
-                drone.mav.mission_item_send(
-                    drone.conn.target_system, drone.conn.target_component,
-                    msg.seq, self.frame, cmd.id, 0, 0, *params)
-            elif msg.get_type() == 'MISSION_ACK':
-                print('\n', 'MAV_MISSION_RESULT', msg.type)
-                break
 
 class Drone:
     def __init__(self, conn='udpin:127.0.0.1:14550'):
@@ -117,6 +102,10 @@ class Drone:
     def latlon(self):
         msg = self.get_msg('GLOBAL_POSITION_INT')
         return msg.lat / 1e7, msg.lon / 1e7
+
+    def alt(self, rel=True):
+        msg = self.get_msg('GLOBAL_POSITION_INT')
+        return (msg.relative_alt if rel else msg.alt) / 1e3
 
     def arm(self):
         self.wait_heartbeat()
@@ -154,14 +143,39 @@ class Drone:
             cmd.id, 0, *cmd.params)
         return self.get_msg('COMMAND_ACK')
 
-    def create_mission(self, frame=mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT):
-        return Mission(self, frame)
+    def upload_mission(self, mission):
+        self.wait_heartbeat()
+        print(f'Sending Mission Items: {len(mission.cmds)}')
+        self.conn.waypoint_count_send(len(mission.cmds))
+        while True:
+            msg = self.get_msg('MISSION_REQUEST', 'MISSION_ACK')
+            if msg.get_type() == 'MISSION_REQUEST':
+                print(msg.seq, end=' ')
+                cmd = mission.cmds[msg.seq]
+                params = cmd.params
+                self.mav.mission_item_send(
+                    self.conn.target_system, self.conn.target_component,
+                    msg.seq, mission.frame, cmd.id, 0, 0, *params)
+            elif msg.get_type() == 'MISSION_ACK':
+                print('\n', 'MAV_MISSION_RESULT', msg.type)
+                return msg
+
+    def start_mission(self):
+        self.set_mode(Mode.GUIDED)
+        self.arm()
+        self.send_command(Command.takeoff(0, 0, 1))
+        while self.alt() < 0.5: pass
+        self.set_mode(Mode.AUTO)
+
+    def wait_for_mission(self, item):
+        '''Mission item starts from 1'''
+        while self.get_msg('MISSION_ITEM_REACHED').seq != item:
+            pass
 
 if __name__ == "__main__":
     from pprint import pprint
     from itertools import product
     import pickle
-    import time
     drone = Drone()
     conn, mav = drone.conn, drone.mav
 
@@ -169,17 +183,38 @@ if __name__ == "__main__":
     r = 30
 
     if False:
-        (drone.create_mission(frame=mavlink.MAV_FRAME_GLOBAL_TERRAIN_ALT)
-            .takeoff(0, 0, h)
-            .waypoint(r, 0, h)
-            .waypoint(r, r, h)
-            .waypoint(-r, r, h)
-            .waypoint(-r, -r, h)
-            .waypoint(r, -r, h)
-            .waypoint(r, 0, h)
-            .land(0, 0, 0)
-            .localize(latlon=drone.latlon())
-            .upload())
+        drone.upload_mission(
+            Mission(mavlink.MAV_FRAME_GLOBAL_TERRAIN_ALT)
+                .takeoff(0, 0, h)
+                .waypoint(r, 0, h)
+                .waypoint(r, r, h)
+                .waypoint(-r, r, h)
+                .waypoint(-r, -r, h)
+                .waypoint(r, -r, h)
+                .waypoint(r, 0, h)
+                .land(0, 0, 0)
+                .localize(latlon=drone.latlon()))
+
+    drone.start_mission()
+    drone.wait_for_mission(2)
+    start = time.time()
+    print(f'Reach WP 2: {start}')
+    drone.wait_for_mission(7)
+    end = time.time()
+    print(f'Reach WP 7: {end}')
+    print(f'Duration: {end - start}')
+
+        # (drone.create_mission(frame=mavlink.MAV_FRAME_GLOBAL_TERRAIN_ALT)
+        #     .takeoff(0, 0, h)
+        #     .waypoint(r, 0, h)
+        #     .waypoint(r, r, h)
+        #     .waypoint(-r, r, h)
+        #     .waypoint(-r, -r, h)
+        #     .waypoint(r, -r, h)
+        #     .waypoint(r, 0, h)
+        #     .land(0, 0, 0)
+        #     .localize(latlon=drone.latlon())
+        #     .upload())
     
     # drone.set_mode(Mode.GUIDED)
     # drone.arm()
