@@ -17,7 +17,7 @@ class Command:
     # Format:
     # - First 3 params: lat=0, lon=0, alt=0
     # - Remaining params: Message field name order
-    # Naming Substitution:
+    # Naming Convention:
     # - Latitude: lat
     # - Longtitude: lon
     # - Altitude: alt
@@ -49,7 +49,9 @@ class Command:
             self.params[-3:-1] = haversineLatLonDeg(*latlon, self.params[-3], self.params[-2])
 
 class Mission(Command):
-    def __init__(self):
+    def __init__(self, drone, frame):
+        self.drone = drone
+        self.frame = frame
         self.cmds = []
         for name in ['waypoint', 'takeoff', 'land']:
             setattr(self, name, self.__decorator(getattr(self, name)))
@@ -71,6 +73,23 @@ class Mission(Command):
         for cmd in self.cmds:
             cmd.localize(yx=yx, latlon=latlon)
         return self
+
+    def upload(self):
+        drone.wait_heartbeat()
+        print(f'Sending Mission Items: {len(self.cmds)}')
+        drone.conn.waypoint_count_send(len(self.cmds))
+        while True:
+            msg = drone.get_msg('MISSION_REQUEST', 'MISSION_ACK')
+            if msg.get_type() == 'MISSION_REQUEST':
+                print(msg.seq, end=' ')
+                cmd = self.cmds[msg.seq]
+                params = cmd.params
+                drone.mav.mission_item_send(
+                    drone.conn.target_system, drone.conn.target_component,
+                    msg.seq, self.frame, cmd.id, 0, 0, *params)
+            elif msg.get_type() == 'MISSION_ACK':
+                print('\n', 'MAV_MISSION_RESULT', msg.type)
+                break
 
 class Drone:
     def __init__(self, conn='udpin:127.0.0.1:14550'):
@@ -135,22 +154,8 @@ class Drone:
             cmd.id, 0, *cmd.params)
         return self.get_msg('COMMAND_ACK')
 
-    def upload_mission(self, cmds, frame=mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT):
-        self.wait_heartbeat()
-        print(f'Sending Mission Items: {len(cmds)}')
-        self.conn.waypoint_count_send(len(cmds))
-        while True:
-            msg = self.get_msg('MISSION_REQUEST', 'MISSION_ACK')
-            if msg.get_type() == 'MISSION_REQUEST':
-                print(msg.seq, end=' ')
-                cmd = cmds[msg.seq]
-                params = cmd.params
-                self.mav.mission_item_send(
-                    self.conn.target_system, self.conn.target_component,
-                    msg.seq, frame, cmd.id, 0, 0, *params)
-            elif msg.get_type() == 'MISSION_ACK':
-                print('\n', 'MAV_MISSION_RESULT', msg.type)
-                break
+    def create_mission(self, frame=mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT):
+        return Mission(self, frame)
 
 if __name__ == "__main__":
     from pprint import pprint
@@ -161,19 +166,37 @@ if __name__ == "__main__":
     conn, mav = drone.conn, drone.mav
 
     h = 10
+    r = 30
 
-    drone.upload_mission(
-        Mission()
+    if False:
+        (drone.create_mission(frame=mavlink.MAV_FRAME_GLOBAL_TERRAIN_ALT)
             .takeoff(0, 0, h)
-            .waypoint(120, 0, h)
-            .waypoint(120, 120, h)
-            .waypoint(-120, 120, h)
-            .waypoint(-120, -120, h)
-            .waypoint(120, -120, h)
-            .waypoint(120, 0, h)
+            .waypoint(r, 0, h)
+            .waypoint(r, r, h)
+            .waypoint(-r, r, h)
+            .waypoint(-r, -r, h)
+            .waypoint(r, -r, h)
+            .waypoint(r, 0, h)
             .land(0, 0, 0)
-            .localize(latlon=drone.latlon()),
-        frame=mavlink.MAV_FRAME_GLOBAL_TERRAIN_ALT)
+            .localize(latlon=drone.latlon())
+            .upload())
+    
+    # drone.set_mode(Mode.GUIDED)
+    # drone.arm()
+    # drone.send_command(CMD.takeoff())
+
+    # drone.upload_mission(
+    #     Mission()
+    #         .takeoff(0, 0, h)
+    #         .waypoint(r, 0, h)
+    #         .waypoint(r, r, h)
+    #         .waypoint(-r, r, h)
+    #         .waypoint(-r, -r, h)
+    #         .waypoint(r, -r, h)
+    #         .waypoint(r, 0, h)
+    #         .land(0, 0, 0)
+    #         .localize(latlon=drone.latlon()),
+    #     frame=mavlink.MAV_FRAME_GLOBAL_TERRAIN_ALT)
 
     # drone.upload_mission(
     #     Mission()
