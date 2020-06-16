@@ -13,14 +13,17 @@ From the terminal:
 This installation script is modified based on the installation from https://github.com/yanhwee/ardupilot-gazebo-ros-guide. Refer to it for more details. It installs the following prerequisites and setups this repository. Note that this repository is a catkin package.
 
 ### Prerequisites
-#### SITL Stack
+#### Main SITL Stack
 - ArduPilot (Modified)
 - ArduPilot Gazebo Plugin (Modified)
 - Gazebo 9
 - ROS Melodic
 - MAVROS
-#### Helium Stack
+#### Supporting Stack
+- Catkin Workspace & Helium Package
 - QGroundControl (QGC) Daily Builds
+- Google Protobufs
+    - Python Bindings for Gazebo Protobuf Messages
 - Python Libraries
     - pymavlink
 

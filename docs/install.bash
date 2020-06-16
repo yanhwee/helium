@@ -2,7 +2,7 @@
 DISTRO="melodic"
 
 set -e
-IWD="~"
+IWD="$HOME"
 
 # Preventing sudo timeout https://serverfault.com/a/833888
 trap "exit" INT TERM; trap "kill 0" EXIT; sudo -v || exit $?; sleep 1; while true; do sleep 60; sudo -nv; done 2>/dev/null &
@@ -21,8 +21,10 @@ sudo apt update
 
 sudo apt install ros-$DISTRO-desktop-full -y
 
-echo "source /opt/ros/$DISTRO/setup.bash" >> ~/.bashrc
-source ~/.bashrc
+if grep -q "source /opt/ros/$DISTRO/setup.bash" ~/.bashrc; then
+    echo "source /opt/ros/$DISTRO/setup.bash" >> ~/.bashrc
+    source ~/.bashrc
+fi
 
 sudo apt install python-rosdep python-rosinstall python-rosinstall-generator python-wstool build-essential -y
 
@@ -33,15 +35,12 @@ rosdep update
 
 cd $IWD
 if [ ! -d "ardupilot" ]; then
-
-    #git clone https://github.com/ArduPilot/ardupilot
-    git clone https://github.com/yanhwee/ardupilot.git
-    cd ardupilot
-    git submodule update --init --recursive
-
+    git clone https://github.com/ArduPilot/ardupilot
 fi
 
-cd $IWD/ardupilot
+cd ardupilot
+
+git submodule update --init --recursive
 
 Tools/environment_install/install-prereqs-ubuntu.sh -y
 
@@ -51,25 +50,29 @@ Tools/environment_install/install-prereqs-ubuntu.sh -y
 
 cd $IWD
 if [ ! -d "ardupilot_gazebo" ]; then
-
-    #git clone https://github.com/khancyr/ardupilot_gazebo
-    git clone https://github.com/yanhwee/ardupilot_gazebo.git
-    cd ardupilot_gazebo
-    mkdir build
-    cd build
-    cmake ..
-    make -j4
-    sudo make install
-
-    echo 'source /usr/share/gazebo/setup.sh' >> ~/.bashrc
-
-    echo 'export GAZEBO_MODEL_PATH=~/ardupilot_gazebo/models' >> ~/.bashrc
-
-    echo 'export GAZEBO_RESOURCE_PATH=~/ardupilot_gazebo/worlds:${GAZEBO_RESOURCE_PATH}' >> ~/.bashrc
-
-    source ~/.bashrc
-
+    git clone https://github.com/khancyr/ardupilot_gazebo
 fi
+
+cd ardupilot_gazebo
+mkdir -p build
+cd build
+cmake ..
+make -j4
+sudo make install
+
+if grep -q 'source /usr/share/gazebo/setup.sh' ~/.bashrc; then
+    echo 'source /usr/share/gazebo/setup.sh' >> ~/.bashrc
+fi
+
+if grep -q 'export GAZEBO_MODEL_PATH=~/ardupilot_gazebo/models' ~/.bashrc; then
+    echo 'export GAZEBO_MODEL_PATH=~/ardupilot_gazebo/models' >> ~/.bashrc
+fi
+
+if grep -q 'export GAZEBO_RESOURCE_PATH=~/ardupilot_gazebo/worlds:${GAZEBO_RESOURCE_PATH}' ~/.bashrc; then
+    echo 'export GAZEBO_RESOURCE_PATH=~/ardupilot_gazebo/worlds:${GAZEBO_RESOURCE_PATH}' >> ~/.bashrc
+fi
+
+source ~/.bashrc
 
 # 4 MAVROS
 
@@ -86,41 +89,75 @@ sudo apt-get install python-catkin-tools -y
 sudo apt-get install ros-$DISTRO-rqt ros-$DISTRO-rqt-common-plugins -y
 
 
-# Helium
+### Helium Supporting Stack
+PYTHON_SITE_PACKAGES_PATH="~/.local/lib/python3.6/site-packages"
+GAZEBO_PROTOBUF_MSGS_PATH="/usr/include/gazebo-9/gazebo/msgs/proto"
 
-# 1 QGroundControl
-
-if [ ! -f "QGroundControl.AppImage" ]; then
-
-    wget https://s3-us-west-2.amazonaws.com/qgroundcontrol/builds/master/QGroundControl.AppImage
-
-fi
-
-# 2 Catkin Workspace & Package
+# 1A Catkin Workspace
 
 cd $IWD
-if [ ! -d "catkin_ws" ]; then
+mkdir -p catkin_ws/src
+cd catkin_ws/
+catkin init
 
-    mkdir -p catkin_ws/src
-    cd catkin_ws/
-    catkin init
-
-fi
+# 1B Helium Package
 
 cd $IWD/catkin_ws/src
 if [ ! -d "helium" ]; then
-
     git clone https://github.com/yanhwee/helium.git
-    catkin build
-
-    echo 'source $IWD/catkin_ws/devel/setup.bash' >> ~/.bashrc
-
-    echo 'source $IWD/catkin_ws/src/helium/setup.bash' >> ~/.bashrc
-
-    source ~/.bashrc
-
 fi
 
-# 3 pymavlink
+catkin build
+
+if grep -q "source $IWD/catkin_ws/devel/setup.bash" ~/.bashrc; then
+    echo "source $IWD/catkin_ws/devel/setup.bash" >> ~/.bashrc
+fi
+
+if grep -q "source $IWD/catkin_ws/src/helium/setup.bash" ~/.bashrc; then
+    echo "source $IWD/catkin_ws/src/helium/setup.bash" >> ~/.bashrc
+fi
+
+source ~/.bashrc
+
+# 2 QGroundControl (QGC) Daily Builds
+
+cd $IWD
+if [ ! -f "QGroundControl.AppImage" ]; then
+    wget https://s3-us-west-2.amazonaws.com/qgroundcontrol/builds/master/QGroundControl.AppImage
+fi
+
+# 3 Google Protobufs
+
+cd $IWD
+if [ ! -d "protobuf" ]; then
+    git clone https://github.com/protocolbuffers/protobuf.git
+fi
+
+cd protobuf
+git submodule update --init --recursive
+./autogen.sh
+
+./configure
+make
+make check
+sudo make install
+sudo ldconfig # refresh shared library cache.
+
+# 3.1 Python Bindings for Gazebo Protobuf Messages
+
+mkdir -p $PYTHON_SITE_PACKAGES_PATH/proto
+cd $PYTHON_SITE_PACKAGES_PATH/proto
+
+protoc --proto_path=$GAZEBO_PROTOBUF_MSGS_PATH --python_out='.' $GAZEBO_PROTOBUF_MSGS_PATH/*.proto
+
+touch __init__.py
+
+echo "PYTHONPATH=\$PYTHONPATH:$PYTHON_SITE_PACKAGES_PATH/proto" >> ~/.bashrc
+
+# https://stackoverflow.com/questions/59910041/getting-module-google-protobuf-descriptor-pool-has-no-attribute-default-in-m
+pip3 install python3-protobuf
+pip3 install --upgrade protobuf
+
+# 4 Python Libraries
 
 pip3 install pymavlink
