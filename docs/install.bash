@@ -126,38 +126,6 @@ if [ ! -f "QGroundControl.AppImage" ]; then
     wget https://s3-us-west-2.amazonaws.com/qgroundcontrol/builds/master/QGroundControl.AppImage
 fi
 
-# 3 Google Protobufs
-
-cd $IWD
-if [ ! -d "protobuf" ]; then
-    git clone https://github.com/protocolbuffers/protobuf.git
-fi
-
-cd protobuf
-git submodule update --init --recursive
-./autogen.sh
-
-./configure
-make
-make check
-sudo make install
-sudo ldconfig # refresh shared library cache.
-
-# 3.1 Python Bindings for Gazebo Protobuf Messages
-
-mkdir -p $PYTHON_SITE_PACKAGES_PATH/proto
-cd $PYTHON_SITE_PACKAGES_PATH/proto
-
-protoc --proto_path=$GAZEBO_PROTOBUF_MSGS_PATH --python_out='.' $GAZEBO_PROTOBUF_MSGS_PATH/*.proto
-
-touch __init__.py
-
-echo "PYTHONPATH=\$PYTHONPATH:$PYTHON_SITE_PACKAGES_PATH/proto" >> ~/.bashrc
-
-# https://stackoverflow.com/questions/59910041/getting-module-google-protobuf-descriptor-pool-has-no-attribute-default-in-m
-pip3 install python3-protobuf
-pip3 install --upgrade protobuf
-
-# 4 Python Libraries
+# 3 Python Libraries
 
 pip3 install pymavlink
