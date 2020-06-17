@@ -1,0 +1,161 @@
+Help on Diagnostics object:
+
+class Diagnostics(google.protobuf.pyext._message.CMessage, google.protobuf.message.Message)
+ |  A ProtocolMessage
+ |  
+ |  Method resolution order:
+ |      Diagnostics
+ |      google.protobuf.pyext._message.CMessage
+ |      google.protobuf.message.Message
+ |      builtins.object
+ |  
+ |  Data descriptors defined here:
+ |  
+ |  real_time
+ |      Field gazebo.msgs.Diagnostics.real_time
+ |  
+ |  real_time_factor
+ |      Field gazebo.msgs.Diagnostics.real_time_factor
+ |  
+ |  sim_time
+ |      Field gazebo.msgs.Diagnostics.sim_time
+ |  
+ |  time
+ |      Field gazebo.msgs.Diagnostics.time
+ |  
+ |  ----------------------------------------------------------------------
+ |  Data and other attributes defined here:
+ |  
+ |  DESCRIPTOR = <google.protobuf.pyext._message.MessageDescriptor object>
+ |  
+ |  DiagTime = <class 'diagnostics_pb2.DiagTime'>
+ |      A ProtocolMessage
+ |  
+ |  ----------------------------------------------------------------------
+ |  Methods inherited from google.protobuf.pyext._message.CMessage:
+ |  
+ |  ByteSize(...)
+ |      Returns the size of the message in bytes.
+ |  
+ |  Clear(...)
+ |      Clears the message.
+ |  
+ |  ClearExtension(...)
+ |      Clears a message field.
+ |  
+ |  ClearField(...)
+ |      Clears a message field.
+ |  
+ |  CopyFrom(...)
+ |      Copies a protocol message into the current message.
+ |  
+ |  DiscardUnknownFields(...)
+ |      Discards the unknown fields.
+ |  
+ |  FindInitializationErrors(...)
+ |      Finds unset required fields.
+ |  
+ |  FromString(...) from google.protobuf.pyext.cpp_message.GeneratedProtocolMessageType
+ |      Creates new method instance from given serialized data.
+ |  
+ |  HasExtension(...)
+ |      Checks if a message field is set.
+ |  
+ |  HasField(...)
+ |      Checks if a message field is set.
+ |  
+ |  IsInitialized(...)
+ |      Checks if all required fields of a protocol message are set.
+ |  
+ |  ListFields(...)
+ |      Lists all set fields of a message.
+ |  
+ |  MergeFrom(...)
+ |      Merges a protocol message into the current message.
+ |  
+ |  MergeFromString(...)
+ |      Merges a serialized message into the current message.
+ |  
+ |  ParseFromString(...)
+ |      Parses a serialized message into the current message.
+ |  
+ |  RegisterExtension(...) from google.protobuf.pyext.cpp_message.GeneratedProtocolMessageType
+ |      Registers an extension with the current message.
+ |  
+ |  SerializePartialToString(...)
+ |      Serializes the message to a string, even if it isn't initialized.
+ |  
+ |  SerializeToString(...)
+ |      Serializes the message to a string, only for initialized messages.
+ |  
+ |  SetInParent(...)
+ |      Sets the has bit of the given field in its parent message.
+ |  
+ |  UnknownFields(...)
+ |      Parse unknown field set
+ |  
+ |  WhichOneof(...)
+ |      Returns the name of the field set inside a oneof, or None if no field is set.
+ |  
+ |  __deepcopy__(...)
+ |      Makes a deep copy of the class.
+ |  
+ |  __eq__(self, value, /)
+ |      Return self==value.
+ |  
+ |  __ge__(self, value, /)
+ |      Return self>=value.
+ |  
+ |  __getattribute__(self, name, /)
+ |      Return getattr(self, name).
+ |  
+ |  __gt__(self, value, /)
+ |      Return self>value.
+ |  
+ |  __init__(self, /, *args, **kwargs)
+ |      Initialize self.  See help(type(self)) for accurate signature.
+ |  
+ |  __le__(self, value, /)
+ |      Return self<=value.
+ |  
+ |  __lt__(self, value, /)
+ |      Return self<value.
+ |  
+ |  __ne__(self, value, /)
+ |      Return self!=value.
+ |  
+ |  __new__(*args, **kwargs) from google.protobuf.pyext._message.MessageMeta
+ |      Create and return a new object.  See help(type) for accurate signature.
+ |  
+ |  __repr__(self, /)
+ |      Return repr(self).
+ |  
+ |  __str__(self, /)
+ |      Return str(self).
+ |  
+ |  __unicode__(...)
+ |      Outputs a unicode representation of the message.
+ |  
+ |  ----------------------------------------------------------------------
+ |  Data descriptors inherited from google.protobuf.pyext._message.CMessage:
+ |  
+ |  Extensions
+ |      Extension dict
+ |  
+ |  ----------------------------------------------------------------------
+ |  Data and other attributes inherited from google.protobuf.pyext._message.CMessage:
+ |  
+ |  __hash__ = None
+ |  
+ |  ----------------------------------------------------------------------
+ |  Methods inherited from google.protobuf.message.Message:
+ |  
+ |  __getstate__(self)
+ |      Support the pickle protocol.
+ |  
+ |  __reduce__(self)
+ |      helper for pickle
+ |  
+ |  __setstate__(self, state)
+ |      Support the pickle protocol.
+
