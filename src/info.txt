@@ -1,2 +1,0 @@
-This folder is for building ROS package src files.
-For example: Creating a Companion Computer that communicates the FCU (Flight Controller Unit) via ROS.
