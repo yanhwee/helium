@@ -23,7 +23,7 @@ This installation script is modified based on the installation from https://gith
 - Catkin Workspace & Helium Package
 - QGroundControl (QGC) Daily Builds
 - Google Protobufs
-    - Python Bindings for Gazebo Protobuf Messages
+    - Generate Python Bindings for Gazebo Protobuf Messages
 - Python Libraries
     - pymavlink
 
