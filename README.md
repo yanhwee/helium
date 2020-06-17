@@ -42,7 +42,7 @@ This installation script is modified based on the installation from https://gith
 ## Features Implemented for ArduCopter SITL
 For ArduCopter Version: 4.0.4-dev
 
-Forked repositories:
+In Forked Repositories:
 
 - ArduPilot  
 https://github.com/yanhwee/ardupilot
