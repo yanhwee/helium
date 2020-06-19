@@ -25,7 +25,7 @@ def get_gz_time():
 if __name__ == "__main__":
     drone = Drone()
 
-    upload_square_mission(drone, 10, 30)
+    upload_square_mission(drone, 10, 120)
 
     drone.start_mission()
 

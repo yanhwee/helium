@@ -29,6 +29,31 @@
 
     <!-- Obstacles -->
     <include>
+        <name>unit_cuboid_1</name>
+        <uri>model://tall_cuboid</uri>
+        <pose>60 -120 0 0 0 0</pose>
+    </include>
+    <include>
+        <name>unit_cuboid_2</name>
+        <uri>model://tall_cuboid</uri>
+        <pose>120 0 0 0 0 0</pose>
+    </include>
+    <include>
+        <name>unit_cuboid_3</name>
+        <uri>model://tall_cuboid</uri>
+        <pose>0 120 0 0 0 0</pose>
+    </include>
+    <include>
+        <name>unit_cuboid_4</name>
+        <uri>model://tall_cuboid</uri>
+        <pose>-120 0 0 0 0 0</pose>
+    </include>
+    <include>
+        <name>unit_cuboid_5</name>
+        <uri>model://tall_cuboid</uri>
+        <pose>-60 -120 0 0 0 0</pose>
+    </include>
+    <!-- <include>
       <name>unit_cylinder_1</name>
       <uri>model://basic_cylinder</uri>
       <pose>15 -30 0 0 0 0</pose>
@@ -52,7 +77,7 @@
       <name>unit_cylinder_5</name>
       <uri>model://basic_cylinder</uri>
       <pose>-15 -30 0 0 0 0</pose>
-    </include>
+    </include> -->
     
   </world>
 </sdf>
