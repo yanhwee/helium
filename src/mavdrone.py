@@ -75,6 +75,17 @@ class Mission(Command):
             cmd.localize(yx=yx, latlon=latlon)
         return self
 
+    def from_waypoints(self, waypoints, height=None, takeoff=False, land=False, accept_radius=0.1):
+        assert(len(waypoints) > 1)
+        xyz = lambda waypoint: (waypoint[0], waypoint[1], waypoint[2] if height is None else height)
+        if takeoff: 
+            self.takeoff(*xyz(waypoints[0]))
+        for waypoint in waypoints[1 if takeoff else None: -1 if land else None]:
+            self.waypoint(*xyz(waypoint), accept_radius=accept_radius)
+        if land:
+            self.land(*xyz(waypoints[-1]))
+        return self
+
 class Drone:
     def __init__(self, conn='udpin:127.0.0.1:14550'):
         conn = mavutil.mavlink_connection(conn)
@@ -151,14 +162,14 @@ class Drone:
             if msg.get_type() == 'MISSION_REQUEST':
                 print(msg.seq, end=' ')
                 cmd = mission.cmds[msg.seq]
-                params = cmd.params
                 self.mav.mission_item_send(
                     self.conn.target_system, self.conn.target_component,
-                    msg.seq, mission.frame, cmd.id, 0, 0, *params)
+                    msg.seq, mission.frame, cmd.id, 0, 0, *cmd.params)
             elif msg.get_type() == 'MISSION_ACK':
                 print('\n', 'MAV_MISSION_RESULT', msg.type)
                 return msg
 
+    # Non-pymavlink (No need heartbeat)
     def start_mission(self):
         self.set_mode(Mode.GUIDED)
         self.arm()
