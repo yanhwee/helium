@@ -52,10 +52,15 @@ class Command:
 class Mission(Command):
     '''Commom Frame Arguments:
     mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavlink.MAV_FRAME_GLOBAL_TERRAIN_ALT'''
+
+    __supported_commands = [
+        'waypoint', 'takeoff', 'land'
+    ]
+
     def __init__(self, frame):
         self.frame = frame
         self.cmds = [Command.takeoff(0, 0, 1)] # pymavlink bug. First item always corrupted.
-        for name in ['waypoint', 'takeoff', 'land']:
+        for name in self.__supported_commands:
             setattr(self, name, self.__decorator(getattr(self, name)))
 
     def __decorator(self, func):
@@ -64,12 +69,6 @@ class Mission(Command):
             self.cmds.append(func(*args, **kwargs))
             return self
         return wrapper
-
-    def __getitem__(self, key):
-        return self.cmds[key]
-
-    def __len__(self):
-        return len(self.cmds)
 
     def localize(self, yx=None, latlon=None):
         for cmd in self.cmds:
