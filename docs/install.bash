@@ -43,7 +43,7 @@ cd ardupilot
 
 git submodule update --init --recursive
 
-Tools/environment_install/install-prereqs-ubuntu.sh -y || true
+bash Tools/environment_install/install-prereqs-ubuntu.sh -y || true
 
 . ~/.profile
 
