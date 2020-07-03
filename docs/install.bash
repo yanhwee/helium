@@ -35,7 +35,8 @@ rosdep update
 
 cd $IWD
 if [ ! -d "ardupilot" ]; then
-    git clone https://github.com/ArduPilot/ardupilot
+    #git clone https://github.com/ArduPilot/ardupilot
+    git clone https://github.com/yanhwee/ardupilot
 fi
 
 cd ardupilot
@@ -50,7 +51,8 @@ Tools/environment_install/install-prereqs-ubuntu.sh -y
 
 cd $IWD
 if [ ! -d "ardupilot_gazebo" ]; then
-    git clone https://github.com/khancyr/ardupilot_gazebo
+    #git clone https://github.com/khancyr/ardupilot_gazebo
+    git clone https://github.com/yanhwee/ardupilot_gazebo
 fi
 
 cd ardupilot_gazebo
