@@ -109,6 +109,7 @@ if [ ! -d "helium" ]; then
     git clone https://github.com/yanhwee/helium.git
 fi
 
+source ~/.bashrc
 catkin build
 
 if ! grep -q "source $IWD/catkin_ws/devel/setup.bash" ~/.bashrc; then
