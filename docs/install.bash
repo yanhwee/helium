@@ -156,10 +156,11 @@ touch __init__.py
 
 echo "PYTHONPATH=\$PYTHONPATH:$PYTHON_SITE_PACKAGES_PATH/proto" >> ~/.bashrc
 
+# 4 Python Libraries
+
+sudo apt install python3-pip
+
+python3 -m pip install pymavlink
 # https://stackoverflow.com/questions/59910041/getting-module-google-protobuf-descriptor-pool-has-no-attribute-default-in-m
 python3 -m pip install python3-protobuf
 python3 -m pip install --upgrade protobuf
-
-# 4 Python Libraries
-
-python3 -m pip install pymavlink

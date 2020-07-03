@@ -26,6 +26,7 @@ This installation script is modified based on the installation from https://gith
     - Generate Python Bindings for Gazebo Protobuf Messages
 - Python Libraries
     - pymavlink
+    - protobuf
 
 ## Quick Test (SITL Stack)
 1. Open four terminals (Tip: Ctrl-Shift-T)
