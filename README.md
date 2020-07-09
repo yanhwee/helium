@@ -21,11 +21,12 @@ This installation script is modified based on the installation from https://gith
 - MAVROS
 #### Supporting Stack
 - Catkin Workspace & Helium Package
-- QGroundControl (QGC) Daily Builds
+- QGroundControl (QGC)
 - Google Protobufs
     - Generate Python Bindings for Gazebo Protobuf Messages
 - Python Libraries
     - pymavlink
+    - protobuf
 
 ## Quick Test (SITL Stack)
 1. Open four terminals (Tip: Ctrl-Shift-T)
@@ -34,12 +35,14 @@ This installation script is modified based on the installation from https://gith
     `roslaunch helium hills_lidar.world`
     2. Start ArduPilot SITL  
     `sim_vehicle.py -v ArduCopter -f gazebo-iris`
-    3. Start QGroundControl (wait a few seconds before doing this step)  
-    `./QGroundControl.AppImage`
-    4. Start MAVROS (wait a few seconds before doing this step as well)  
+    - Will need to compile (for first time)
+    - Wait for `APM: EKF2 IMU1 tilt alignment complete` before continuing
+    - Initialisation is completed when `APM: EKF2 IMU1 is using GPS`
+        - Then you can start sending MAVLink commands & interface with MAVProxy
+    3. Start MAVROS  
     `roslaunch helium apm.launch`
-3. Note (for first time):
-    1. `sim_vehicle.py` will need time to compile so wait till its done before continuing
+    4. Start QGroundControl  
+    `./QGroundControl.AppImage`
 
 ## Features Implemented for ArduCopter SITL
 For ArduCopter Version: 4.0.4-dev

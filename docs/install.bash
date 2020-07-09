@@ -1,7 +1,8 @@
-#!/usr/bin/env bash
-DISTRO="melodic"
-
+#!/usr/bin/env bash -i
 set -e
+set -x
+
+DISTRO="melodic"
 IWD="$HOME"
 
 # Preventing sudo timeout https://serverfault.com/a/833888
@@ -21,7 +22,7 @@ sudo apt update
 
 sudo apt install ros-$DISTRO-desktop-full -y
 
-if grep -q "source /opt/ros/$DISTRO/setup.bash" ~/.bashrc; then
+if ! grep -q "source /opt/ros/$DISTRO/setup.bash" ~/.bashrc; then
     echo "source /opt/ros/$DISTRO/setup.bash" >> ~/.bashrc
     source ~/.bashrc
 fi
@@ -35,14 +36,15 @@ rosdep update
 
 cd $IWD
 if [ ! -d "ardupilot" ]; then
-    git clone https://github.com/ArduPilot/ardupilot
+    #git clone https://github.com/ArduPilot/ardupilot
+    git clone https://github.com/yanhwee/ardupilot
 fi
 
 cd ardupilot
 
 git submodule update --init --recursive
 
-Tools/environment_install/install-prereqs-ubuntu.sh -y
+bash Tools/environment_install/install-prereqs-ubuntu.sh -y || true
 
 . ~/.profile
 
@@ -50,7 +52,8 @@ Tools/environment_install/install-prereqs-ubuntu.sh -y
 
 cd $IWD
 if [ ! -d "ardupilot_gazebo" ]; then
-    git clone https://github.com/khancyr/ardupilot_gazebo
+    #git clone https://github.com/khancyr/ardupilot_gazebo
+    git clone https://github.com/yanhwee/ardupilot_gazebo
 fi
 
 cd ardupilot_gazebo
@@ -60,15 +63,15 @@ cmake ..
 make -j4
 sudo make install
 
-if grep -q 'source /usr/share/gazebo/setup.sh' ~/.bashrc; then
+if ! grep -q 'source /usr/share/gazebo/setup.sh' ~/.bashrc; then
     echo 'source /usr/share/gazebo/setup.sh' >> ~/.bashrc
 fi
 
-if grep -q 'export GAZEBO_MODEL_PATH=~/ardupilot_gazebo/models' ~/.bashrc; then
+if ! grep -q 'export GAZEBO_MODEL_PATH=~/ardupilot_gazebo/models' ~/.bashrc; then
     echo 'export GAZEBO_MODEL_PATH=~/ardupilot_gazebo/models' >> ~/.bashrc
 fi
 
-if grep -q 'export GAZEBO_RESOURCE_PATH=~/ardupilot_gazebo/worlds:${GAZEBO_RESOURCE_PATH}' ~/.bashrc; then
+if ! grep -q 'export GAZEBO_RESOURCE_PATH=~/ardupilot_gazebo/worlds:${GAZEBO_RESOURCE_PATH}' ~/.bashrc; then
     echo 'export GAZEBO_RESOURCE_PATH=~/ardupilot_gazebo/worlds:${GAZEBO_RESOURCE_PATH}' >> ~/.bashrc
 fi
 
@@ -89,8 +92,12 @@ sudo apt-get install python-catkin-tools -y
 sudo apt-get install ros-$DISTRO-rqt ros-$DISTRO-rqt-common-plugins -y
 
 
+# Troubleshooting 2.1
+sed -i -e 's,https://api.ignitionfuel.org,https://fuel.ignitionrobotics.org/1.0/models,g' $IWD/.ignition/fuel/config.yaml
+
+
 ### Helium Supporting Stack
-PYTHON_SITE_PACKAGES_PATH="~/.local/lib/python3.6/site-packages"
+PYTHON_SITE_PACKAGES_PATH="$HOME/.local/lib/python3.6/site-packages"
 GAZEBO_PROTOBUF_MSGS_PATH="/usr/include/gazebo-9/gazebo/msgs/proto"
 
 # 1A Catkin Workspace
@@ -109,22 +116,27 @@ fi
 
 catkin build
 
-if grep -q "source $IWD/catkin_ws/devel/setup.bash" ~/.bashrc; then
+if ! grep -q "source $IWD/catkin_ws/devel/setup.bash" ~/.bashrc; then
     echo "source $IWD/catkin_ws/devel/setup.bash" >> ~/.bashrc
 fi
 
-if grep -q "source $IWD/catkin_ws/src/helium/setup.bash" ~/.bashrc; then
+if ! grep -q "source $IWD/catkin_ws/src/helium/setup.bash" ~/.bashrc; then
     echo "source $IWD/catkin_ws/src/helium/setup.bash" >> ~/.bashrc
 fi
 
 source ~/.bashrc
 
-# 2 QGroundControl (QGC) Daily Builds
+# 2 QGroundControl (QGC)
 
 cd $IWD
+
+sudo apt install gstreamer1.0-plugins-bad gstreamer1.0-libav gstreamer1.0-gl -y
+
 if [ ! -f "QGroundControl.AppImage" ]; then
-    wget https://s3-us-west-2.amazonaws.com/qgroundcontrol/builds/master/QGroundControl.AppImage
+    wget https://s3-us-west-2.amazonaws.com/qgroundcontrol/latest/QGroundControl.AppImage
 fi
+
+chmod +x ./QGroundControl.AppImage
 
 # 3 Google Protobufs
 
@@ -152,12 +164,15 @@ protoc --proto_path=$GAZEBO_PROTOBUF_MSGS_PATH --python_out='.' $GAZEBO_PROTOBUF
 
 touch __init__.py
 
-echo "PYTHONPATH=\$PYTHONPATH:$PYTHON_SITE_PACKAGES_PATH/proto" >> ~/.bashrc
-
-# https://stackoverflow.com/questions/59910041/getting-module-google-protobuf-descriptor-pool-has-no-attribute-default-in-m
-pip3 install python3-protobuf
-pip3 install --upgrade protobuf
+if ! grep -q "PYTHONPATH=\$PYTHONPATH:$PYTHON_SITE_PACKAGES_PATH/proto" ~/.bashrc; then
+    echo "PYTHONPATH=\$PYTHONPATH:$PYTHON_SITE_PACKAGES_PATH/proto" >> ~/.bashrc
+fi
 
 # 4 Python Libraries
 
-pip3 install pymavlink
+sudo apt install python3-pip
+
+python3 -m pip install pymavlink
+# https://stackoverflow.com/questions/59910041/getting-module-google-protobuf-descriptor-pool-has-no-attribute-default-in-m
+python3 -m pip install python3-protobuf
+python3 -m pip install --upgrade protobuf
