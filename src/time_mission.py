@@ -51,7 +51,7 @@ def time_mission(drone, start_item, end_item):
 if __name__ == "__main__":
     drone = Drone()
 
-    waypoints = read_waypoints('src/ladder_local')
+    waypoints = read_waypoints('src/square_local')
 
     drone.upload_mission(
         Mission(mavlink.MAV_FRAME_GLOBAL_TERRAIN_ALT)

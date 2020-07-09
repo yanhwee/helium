@@ -35,14 +35,42 @@ This installation script is modified based on the installation from https://gith
     `roslaunch helium hills_lidar.world`
     2. Start ArduPilot SITL  
     `sim_vehicle.py -v ArduCopter -f gazebo-iris`
-    - Will need to compile (for first time)
-    - Wait for `APM: EKF2 IMU1 tilt alignment complete` before continuing
-    - Initialisation is completed when `APM: EKF2 IMU1 is using GPS`
-        - Then you can start sending MAVLink commands & interface with MAVProxy
+        - Will need to compile (for first time)
+        - Wait for `APM: EKF2 IMU1 tilt alignment complete` before continuing to step 3
+        - Initialisation is completed when `APM: EKF2 IMU1 is using GPS`
+            - Then you can start sending MAVLink commands & interface with MAVProxy
     3. Start MAVROS  
     `roslaunch helium apm.launch`
     4. Start QGroundControl  
     `./QGroundControl.AppImage`
+
+## Repository Guide
+1. docs
+    - For installation scripts, documentations, picture & code examples
+2. launch
+    - For ROS launch files
+    - `apm.launch` starts MAVROS
+    - The rest starts Gazebo worlds within ROS
+3. models
+    - For Gazebo model files
+4. worlds
+    - For Gazebo world files
+5. src
+    - For files needed for SITL testing
+    - `mavdrone.py`
+        - Module for communicating with the drone via MAVLink
+        - Uses pymavlink beneath to handle MAVLink messages.
+    - `gazebo.py`
+        - Module for retrieving Gazebo topic messages.
+        - Uses protobuf to parse `gztopic` text formatted messages.
+6. `setup.bash`
+    - Is sourced in `.bashrc`
+    - Setups Gazebo world and model paths
+
+## Future Improvements
+1. Multi-drone Simulation
+    - Probably check out intelligent quad video for that.
+2. Allow `pymavlink` and QGC to operate simultaneously.
 
 ## Features Implemented for ArduCopter SITL
 For ArduCopter Version: 4.0.4-dev
