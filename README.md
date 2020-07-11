@@ -29,7 +29,7 @@ This installation script is modified based on the installation from https://gith
     - protobuf
 
 ## Quick Test (SITL Stack)
-1. Open four terminals (Tip: Ctrl-Shift-T)
+1. Open four terminals (Tip: Ctrl-Alt-T + Ctrl-Shift-T x4)
 2. In each:
     1. roslaunch Gazebo world  
     `roslaunch helium hills_lidar.world`
@@ -71,6 +71,9 @@ This installation script is modified based on the installation from https://gith
 1. Multi-drone Simulation
     - Probably check out intelligent quad video for that.
 2. Allow `pymavlink` and QGC to operate simultaneously.
+
+## Bugs Found
+1. During a mission land command, if terrain following is enabled, the drone will keep flying higher.
 
 ## Features Implemented for ArduCopter SITL
 For ArduCopter Version: 4.0.4-dev
