@@ -5,10 +5,10 @@ from functools import wraps
 import time
 
 class Mode:
-    STABILIZE = 0;      ACRO = 1;       ALT_HOLD = 2;   AUTO = 3;   GUIDED = 4
-    LOITER = 5;         RTL = 6;        CIRCLE = 7;     LAND = 9;   DRIFT = 11
-    SPORT = 13;         POSHOLD = 16;   BRAKE = 17;     THROW = 18; AVOID_ADSB = 19
-    GUIDED_NOGPS = 20;  SMART_RTL = 21; ZIGZAG = 24
+    STABILIZE,      ACRO,       ALT_HOLD,   AUTO,   GUIDED      = 0, 1, 2, 3, 4
+    LOITER,         RTL,        CIRCLE,     LAND,   DRIFT       = 5, 6, 7, 9, 11
+    SPORT,          POSHOLD,    BRAKE,      THROW,  AVOID_ADSB  = 13, 16, 17, 18, 19
+    GUIDED_NOGPS,   SMART_RTL,  ZIGZAG                          = 20, 21, 24
 
 class Command:
     def __init__(self, id, *params):
@@ -48,6 +48,7 @@ class Command:
             self.params[-2] += yx[1]
         elif latlon:
             self.params[-3:-1] = haversineLatLonDeg(*latlon, self.params[-3], self.params[-2])
+        return self
 
 class Mission(Command):
     '''Commom Frame Arguments:
@@ -75,12 +76,9 @@ class Mission(Command):
             cmd.localize(yx=yx, latlon=latlon)
         return self
 
-    def from_waypoints(self, waypoints, height=None, takeoff=False, land=False, accept_radius=0.1):
-        assert(len(waypoints) > 1)
+    def from_waypoints(self, waypoints, height=None, land=False, accept_radius=0.1):
         xyz = lambda waypoint: (waypoint[0], waypoint[1], waypoint[2] if height is None else height)
-        if takeoff: 
-            self.takeoff(*xyz(waypoints[0]))
-        for waypoint in waypoints[1 if takeoff else None: -1 if land else None]:
+        for waypoint in waypoints[:-1 if land else None]:
             self.waypoint(*xyz(waypoint), accept_radius=accept_radius)
         if land:
             self.land(*xyz(waypoints[-1]))

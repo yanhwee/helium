@@ -1,5 +1,5 @@
 from gazebo import gztopic
-from mavdrone import mavlink, Mode, Mission, Drone
+from mavdrone import mavlink, Mode, Mission, Drone, Command
 from proto.diagnostics_pb2 import Diagnostics
 import pickle
 import time
@@ -29,7 +29,8 @@ def read_waypoints(filename):
         return waypoints
 
 def time_mission(drone, start_item, end_item):
-    drone.wait_for_mission_item(start_item)
+    if start_item != 0:
+        drone.wait_for_mission_item(start_item)
     real_start, sim_start = get_gz_time()
     start = time.time()
     print('Timer Starts')
@@ -47,17 +48,30 @@ def time_mission(drone, start_item, end_item):
     print('Python Time Duration:', duration)
 
     return real_duration, sim_duration, duration
+
+def upload_and_time_mission(waypoints, height=10, land=False):
+    drone.upload_mission(
+        Mission(mavlink.MAV_FRAME_GLOBAL_TERRAIN_ALT)
+            .from_waypoints(waypoints, height=height, land=land)
+            .localize(latlon=drone.latlon()))
+
+    drone.start_mission()
+    time_mission(drone, 0, len(waypoints))
     
 if __name__ == "__main__":
     drone = Drone()
 
-    waypoints = read_waypoints('src/square_local')
+    square_waypoints = read_waypoints('src/square_local')
+    ladder_waypoints = read_waypoints('src/ladder_local')
 
-    drone.upload_mission(
-        Mission(mavlink.MAV_FRAME_GLOBAL_TERRAIN_ALT)
-            .from_waypoints(waypoints, height=10)
-            .localize(latlon=drone.latlon()))
+    print('square', square_waypoints)
+    print('ladder', ladder_waypoints)
 
-    drone.start_mission()
-
-    time_mission(drone, 1, len(waypoints))
+    # print('Square Mission')
+    # upload_and_time_mission(square_waypoints, height=50, land=True)
+    print('Ladder Mission')
+    upload_and_time_mission(ladder_waypoints, height=50, land=True)
+    # print('Ladder Mission')
+    # upload_and_time_mission(ladder_waypoints, height=50, land=True)
+    # print('Square Mission')
+    # upload_and_time_mission(square_waypoints, height=50, land=True)
