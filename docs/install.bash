@@ -117,6 +117,7 @@ if [ ! -d "helium" ]; then
     git clone https://github.com/yanhwee/helium.git
 fi
 
+source /opt/ros/melodic/setup.bash
 catkin build
 
 if ! grep -q "source $IWD/catkin_ws/devel/setup.bash" ~/.bashrc; then
@@ -173,7 +174,7 @@ fi
 
 # 4 Python Libraries
 
-sudo apt install python3-pip
+sudo apt install python3-pip -y
 
 python3 -m pip install pymavlink
 # https://stackoverflow.com/questions/59910041/getting-module-google-protobuf-descriptor-pool-has-no-attribute-default-in-m
