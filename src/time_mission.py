@@ -49,7 +49,7 @@ def time_mission(drone, start_item, end_item):
 
     return real_duration, sim_duration, duration
 
-def upload_and_time_mission(waypoints, height=10, land=False):
+def upload_and_time_mission(drone, waypoints, height=10, land=False):
     drone.upload_mission(
         Mission(mavlink.MAV_FRAME_GLOBAL_TERRAIN_ALT)
             .from_waypoints(waypoints, height=height, land=land)
@@ -68,10 +68,10 @@ if __name__ == "__main__":
     print('ladder', ladder_waypoints)
 
     # print('Square Mission')
-    # upload_and_time_mission(square_waypoints, height=50, land=True)
+    # upload_and_time_mission(drone, square_waypoints, height=50, land=True)
     print('Ladder Mission')
-    upload_and_time_mission(ladder_waypoints, height=50, land=True)
+    upload_and_time_mission(drone, ladder_waypoints, height=50, land=True)
     # print('Ladder Mission')
-    # upload_and_time_mission(ladder_waypoints, height=50, land=True)
+    # upload_and_time_mission(drone, ladder_waypoints, height=50, land=True)
     # print('Square Mission')
-    # upload_and_time_mission(square_waypoints, height=50, land=True)
+    # upload_and_time_mission(drone, square_waypoints, height=50, land=True)
