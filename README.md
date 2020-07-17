@@ -32,7 +32,7 @@ This installation script is modified based on the installation from https://gith
 1. Open four terminals (Tip: Ctrl-Alt-T + Ctrl-Shift-T x4)
 2. In each:
     1. roslaunch Gazebo world  
-    `roslaunch helium hills_lidar.world`
+    `roslaunch helium hills_lidar.launch`
     2. Start ArduPilot SITL  
     `sim_vehicle.py -v ArduCopter -f gazebo-iris`
         - Will need to compile (for first time)
