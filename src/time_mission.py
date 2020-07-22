@@ -57,21 +57,34 @@ def upload_and_time_mission(drone, waypoints, height=10, land=False):
 
     drone.start_mission()
     time_mission(drone, 0, len(waypoints))
-    
+
 if __name__ == "__main__":
+    # Create a Drone Object (It will connect to ArduPilot)
     drone = Drone()
 
-    square_waypoints = read_waypoints('src/square_local')
-    ladder_waypoints = read_waypoints('src/ladder_local')
+    ### Example 1: Upload and Time a Square Mission
 
-    print('square', square_waypoints)
-    print('ladder', ladder_waypoints)
+    upload_square_mission(drone, 15, 20)
 
-    # print('Square Mission')
-    # upload_and_time_mission(drone, square_waypoints, height=50, land=True)
-    print('Ladder Mission')
-    upload_and_time_mission(drone, ladder_waypoints, height=50, land=True)
-    # print('Ladder Mission')
+    drone.start_mission()
+
+    drone.wait_for_mission_item(2)
+
+    real_start, sim_start = get_gz_time()
+
+    drone.wait_for_mission_item(7)
+
+    real_end, sim_end = get_gz_time()
+
+    print('Real Time Duration:', real_end - real_start)
+    print('Sim Time Duration:', sim_end - sim_start)
+
+    ### Example 2: Read, Upload & Time Waypoints
+
+    # spiral_waypoints = read_waypoints('src/spiral')
+    # print('Spiral Waypoints:\n', spiral_waypoints)
+    # upload_and_time_mission(drone, spiral_waypoints, height=50, land=True)
+    
+    # ladder_waypoints = read_waypoints('src/ladder')
+    # print('Ladder Waypoints\n', ladder_waypoints)
     # upload_and_time_mission(drone, ladder_waypoints, height=50, land=True)
-    # print('Square Mission')
-    # upload_and_time_mission(drone, square_waypoints, height=50, land=True)

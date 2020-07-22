@@ -28,8 +28,8 @@ This installation script is modified based on the installation from https://gith
     - pymavlink
     - protobuf
 
-## Quick Test (SITL Stack)
-1. Open four terminals (Tip: Ctrl-Alt-T + Ctrl-Shift-T x4)
+## Starting the SITL Stack
+1. Open four terminals in the home directory (Tip: Ctrl-Alt-T + Ctrl-Shift-T x4)
 2. In each:
     1. roslaunch Gazebo world  
     `roslaunch helium hills_lidar.launch`
@@ -43,6 +43,7 @@ This installation script is modified based on the installation from https://gith
     `roslaunch helium apm.launch`
     4. Start QGroundControl  
     `./QGroundControl.AppImage`
+3. Afterwards, you may look at `src/time_mission.py` for an example to upload and time drone missions.
 
 ## Repository Guide
 1. docs
@@ -67,10 +68,9 @@ This installation script is modified based on the installation from https://gith
     - Is sourced in `.bashrc`
     - Setups Gazebo world and model paths
 
-## Future Improvements
-1. Multi-drone Simulation
-    - Probably check out intelligent quad video for that.
-2. Allow `pymavlink` and QGC to operate simultaneously.
+## Tips
+1. To change directory to helium quickly:
+    - `roscd helium`
 
 ## Bugs Found
 1. During a mission land command, if terrain following is enabled, the drone will keep flying higher.
