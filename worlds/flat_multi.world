@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <world name="default">
+    <scene>
+      <shadows>false</shadows>
+    </scene>
+
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>    
+
+    <!-- A ground plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <!-- Secondary ground plane 
+    (Prevent Lidar Ray from slipping thru)-->
+    <include>
+      <uri>model://ground_plane</uri>
+      <pose>0 0 -0.01 0 0 0</pose>
+    </include>
+
+    <!-- Iris with Lidar -->
+    <include>
+      <uri>model://iris_with_lidar</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://iris_with_lidar_2</uri>
+      <pose>5 5 0 0 0 0</pose>
+    </include>
+
+  </world>
+</sdf>
