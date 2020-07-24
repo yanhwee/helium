@@ -29,6 +29,7 @@ This installation script is modified based on the installation from https://gith
     - protobuf
 
 ## Starting the SITL Stack
+### Manually
 1. Open four terminals in the home directory (Tip: Ctrl-Alt-T + Ctrl-Shift-T x4)
 2. In each:
     1. roslaunch Gazebo world  
@@ -43,27 +44,35 @@ This installation script is modified based on the installation from https://gith
     `roslaunch helium apm.launch`
     4. Start QGroundControl  
     `./QGroundControl.AppImage`
-3. Afterwards, you may look at `src/time_mission.py` for an example to upload and time drone missions.
+
+### Automatically
+Note: Run it via the gnome terminal.
+1. Start: `bash run.bash`
+2. Stop: `ctrl-c`
 
 ## Repository Guide
 1. docs
-    - For installation scripts, documentations, picture & code examples
+    - Contains documentation, diagrams, installation script, code examples
 2. launch
-    - For ROS launch files
+    - Contains ROS launch files
     - `apm.launch` starts MAVROS
     - The rest starts Gazebo worlds within ROS
 3. models
-    - For Gazebo model files
+    - Contains Gazebo models
 4. worlds
-    - For Gazebo world files
+    - Contains Gazebo worlds
 5. src
-    - For files needed for SITL testing
+    - Contains SITL Code
     - `mavdrone.py`
         - Module for communicating with the drone via MAVLink
         - Uses pymavlink beneath to handle MAVLink messages.
     - `gazebo.py`
         - Module for retrieving Gazebo topic messages.
         - Uses protobuf to parse `gztopic` text formatted messages.
+    - `time_mission.py`
+        - Code example for uploading and timing drone missions
+    - `multi_drone.py`
+        - Code example for multi_drone simulation 
 6. `setup.bash`
     - Is sourced in `.bashrc`
     - Setups Gazebo world and model paths
@@ -183,3 +192,54 @@ The current version of ArduCopter does not allow terrain following if object avo
     3. A switch case in `AC_WPNav_OA` handles the results. However, if the `OAPathPlanner` is still processing, a false boolean will disable terrain following (for that waypoint). (This might be a bug?)
     4. Since the check occurs so frequently, terrain following will be disabled for all waypoints throughout the mission.
     5. The fix is to replace the false boolean to `_terrain_alt`, a boolean that stores the state of terrain following, true if enabled and false otherwise.
+
+### 4. Multi-Drone Simulation
+To be honest, the implementation for multi-drone simulation is very inelegant and unscalable.
+
+1. References:
+    1. https://github.com/Intelligent-Quads/iq_tutorials/blob/master/docs/swarming_ardupilot.md
+    2. https://github.com/Intelligent-Quads/iq_tutorials/blob/master/docs/multi_mavros_drones.md
+
+2. Walk-through
+    1. Segregrate the FDM ports of the drone model so ArduPilot (sim_vehicle.py) can correctly connect to the drone plugin.
+        1. Duplicate the existing drone model
+            1. `iris_with_lidar` -> `iris_with_lidar_2`
+            2. `iris_with_ardupilot` -> `iris_with_ardupilot_2`
+        2. Change the include model (in `iris_with_lidar`)
+            1. `<uri>model://iris_with_ardupilot</uri>` -> `<uri>model://iris_with_ardupilot_2</uri>`
+        3. Change the FDM Ports by 10 (in `iris_with_ardupilot_2`)
+            1. `<fdm_port_in>9002</fdm_port_in>` -> `<fdm_port_in>9012</fdm_port_in>`
+            2. `<fdm_port_out>9003</fdm_port_out>`-> `<fdm_port_out>9013</fdm_port_out>`
+    2. Create another MAVROS instance for the new drone
+        1. Duplicate the existing `apm.launch` file
+            1. `apm.launch` -> `apm2.launch`
+        2. Change certain parameters
+            1. Increment `fcu_url` by 10
+            2. Increment `target_url` by 1
+            3. Add & Set `ns` to `/drone2`
+        3. Ensure that the new drone model use the new ROS topic
+            1. Duplicate the lidar 360 model
+                - `lidar_360` -> `lidar_360_2`
+            2. Change the ROS topic name
+                - `/mavros/obstacle/send` -> `/drone2/mavros/obstacle/send`
+    3. Fix QGroundControl to allow multiple drones
+        1. Duplicate the existing ArduPilot startup parameter file
+            1. `gazebo-iris` -> `gazebo-iris-2`
+            2. Append `SYSID_THISMAV 2` to end of file
+        2. Register this new parameter file in `ardupilot/Tools/autotest/pysim/vehicleinfo.py`
+            - (See references)
+3. Test
+    1. Start the Gazebo World in ROS
+        - `roslaunch helium flat_multi.launch`
+    2. Start the ArduCopter instances
+        - `sim_vehicle.py -v ArduCopter -f gazebo-iris -I0 --out=tcpin:0.0.0.0:8100`
+        - `sim_vehicle.py -v ArduCopter -f gazebo-iris-2 -I1 --out=tcpin:0.0.0.0:8200`
+    3. Start the MAVROS instances
+        - `roslaunch helium apm.launch`
+        - `roslaunch helium apm2.launch`
+    4. Start QGroundControl
+        - Settings -> Comm Links -> Add
+            - Name: Drone 2
+            - Type: TCP
+            - TCP Port: 8200
+        - Ok -> Drone 2 -> Connect
