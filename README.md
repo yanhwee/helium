@@ -186,8 +186,8 @@ https://github.com/yanhwee/ardupilot_gazebo
 ### 3. Terrain Following with Object Avoidance
 The current version of ArduCopter does not allow terrain following if object avoidance is enabled.
 
-1. Psuedo-Diagram
-![ArduPilot Object Avoidance Diagram](docs/diagrams/oa-bug.svg)
+1. Psuedo-Diagram  
+    ![ArduPilot Object Avoidance Diagram](docs/diagrams/oa-bug.svg)
 
 2. Walk-through
     1. Regardless whether OA is enabled, `AC_WPNav_OA` will always be used rather than `AC_WPNav`. `AC_WPNav_OA::update_wpnav()` will always call `AC_WPNav::update_wpnav()` at the end. The main problem lies within `AC_WPNav_OA`.
