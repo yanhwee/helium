@@ -226,11 +226,12 @@ To be honest, the implementation for multi-drone simulation is very inelegant an
             2. Change the ROS topic name
                 - `/mavros/obstacle/send` -> `/drone2/mavros/obstacle/send`
     3. Fix QGroundControl to allow multiple drones
-        1. Duplicate the existing ArduPilot startup parameter file
-            1. `gazebo-iris` -> `gazebo-iris-2`
-            2. Append `SYSID_THISMAV 2` to end of file
-        2. Register this new parameter file in `ardupilot/Tools/autotest/pysim/vehicleinfo.py`
-            - (See references)
+        1. Navigate to the ArduPilot Repository (`~/ardupilot/Tools/autotest`)
+            1. Duplicate the existing ArduPilot startup parameter file (in `./default_params`)
+                1. `gazebo-iris` -> `gazebo-iris-2`
+                2. Append `SYSID_THISMAV 2` to end of file
+            2. Register this new parameter file (in `./pysim/vehicleinfo.py`)
+                - (See references)
 3. Test
     1. Start the Gazebo World in ROS
         - `roslaunch helium flat_multi.launch`
