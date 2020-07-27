@@ -28,6 +28,9 @@ This installation script is modified based on the installation from https://gith
     - pymavlink
     - protobuf
 
+## Software Architecture Overview
+![SITL Architecture](docs/diagrams/architecture.svg)
+
 ## Starting the SITL Stack
 ### Manually
 1. Open four terminals in the home directory (Tip: Ctrl-Alt-T + Ctrl-Shift-T x4)
@@ -100,7 +103,7 @@ https://github.com/yanhwee/ardupilot_gazebo
     1. https://discuss.ardupilot.org/t/gazebo-with-lidar/24717/6
 
 2. Psuedo-Diagram  
-    ![ArduPilot Gazebo Diagram](docs/gazebo-to-ardupilot.png)
+    ![ArduPilot Gazebo Diagram](docs/diagrams/plugin.svg)
 
 3. Walk-through  
     1. SIM_Gazebo
@@ -184,7 +187,7 @@ https://github.com/yanhwee/ardupilot_gazebo
 The current version of ArduCopter does not allow terrain following if object avoidance is enabled.
 
 1. Psuedo-Diagram
-![ArduPilot Object Avoidance Diagram](docs/ardupilot-oa.png)
+![ArduPilot Object Avoidance Diagram](docs/diagrams/oa-bug.svg)
 
 2. Walk-through
     1. Regardless whether OA is enabled, `AC_WPNav_OA` will always be used rather than `AC_WPNav`. `AC_WPNav_OA::update_wpnav()` will always call `AC_WPNav::update_wpnav()` at the end. The main problem lies within `AC_WPNav_OA`.
